@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Countdown Timer with Animated Message</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             display: flex;
             flex-direction: column;
@@ -17,19 +23,21 @@
             margin: 0;
             overflow-x: hidden;
             perspective: 1000px;
+            padding: 20px;
         }
 
         #timer-container {
             position: relative;
-            width: 200px;
-            height: 200px;
+            width: min(200px, 80vw);
+            height: min(200px, 80vw);
             display: flex;
             justify-content: center;
             align-items: center;
+            margin: 20px auto;
         }
 
         #timer {
-            font-size: 72px;
+            font-size: clamp(36px, 10vw, 72px);
             font-weight: bold;
             background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
             -webkit-background-clip: text;
@@ -46,21 +54,21 @@
         }
 
         .circle-1 {
-            width: 200px;
-            height: 200px;
+            width: 100%;
+            height: 100%;
             border: 4px solid #ff6b6b;
             animation-delay: 0s;
         }
 
         .circle-2 {
-            width: 180px;
-            height: 180px;
+            width: 90%;
+            height: 90%;
             border: 4px solid #4ecdc4;
             animation-delay: 0.5s;
         }
 
         #running {
-            font-size: 48px;
+            font-size: clamp(24px, 6vw, 48px);
             background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #ff6b6b);
             background-size: 200% auto;
             color: transparent;
@@ -69,37 +77,41 @@
             display: none;
             animation: shine 3s linear infinite, bounceIn 1s infinite;
             text-shadow: 0 0 10px rgba(255,255,255,0.3);
+            padding: 0 20px;
+            text-align: center;
+            width: 100%;
         }
 
         #output {
-            font-size: 24px;
+            font-size: clamp(16px, 4vw, 24px);
             margin: 20px auto;
             font-weight: 500;
             color: #fff;
             display: none;
-            max-width: 800px;
+            width: min(90vw, 800px);
             line-height: 1.8;
-            padding: 30px;
+            padding: 20px;
             position: relative;
             background: linear-gradient(45deg, rgba(255,107,107,0.1), rgba(78,205,196,0.1));
             border-radius: 15px;
             transform-style: preserve-3d;
             animation: fadeInUp 1s ease-out;
-            white-space: pre-wrap; /* Changed from pre-line to pre-wrap */
+            white-space: pre-wrap;
             text-align: left;
         }
 
         #message-container {
             position: relative;
-            width: 50%;
+            width: 100%;
             max-width: 800px;
             margin: 0 auto;
             overflow: hidden;
+            padding: 0 10px;
         }
 
         .heart {
             position: fixed;
-            font-size: 20px;
+            font-size: clamp(16px, 4vw, 20px);
             color: #ff6b6b;
             z-index: 1;
             pointer-events: none;
@@ -121,10 +133,10 @@
         #slider {
             display: none;
             position: relative;
-            width: 800px; /* Increased width */
-            height: 800px; /* Increased height */
+            width: min(90vw, 800px);
+            height: min(90vw, 800px);
             overflow: hidden;
-            margin-top: 20px;
+            margin: 20px auto;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
@@ -133,14 +145,21 @@
             width: 50%;
             height: 100%;
             position: absolute;
-            object-fit: contain; /* Changed from cover to contain */
+            object-fit: contain;
             opacity: 0;
             transition: opacity 1s ease-in-out;
-            background-color: #000; /* Added black background for letterboxing */
+            background-color: #000;
         }
 
         #slider img.active {
             opacity: 1;
+        }
+
+        .word {
+            opacity: 0;
+            display: inline-block;
+            animation: fadeInWord 0.5s ease-out forwards;
+            margin-right: 8px;
         }
 
         @keyframes shine {
@@ -165,25 +184,61 @@
         }
 
         @keyframes floatHeart {
-            0% { transform: translateY(100vh) scale(0); opacity: 1; }
-            100% { transform: translateY(-100vh) scale(1); opacity: 0; }
+            0% { 
+                transform: translateY(100vh) scale(0) translateX(-50%); 
+                opacity: 1; 
+            }
+            100% { 
+                transform: translateY(-100vh) scale(1) translateX(-50%); 
+                opacity: 0; 
+            }
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .word {
-            opacity: 0;
-            display: inline-block;
-            animation: fadeInWord 0.5s ease-out forwards;
-            margin-right: 8px; /* Added spacing between words */
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
         }
 
         @keyframes fadeInWord {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { 
+                opacity: 0; 
+                transform: translateY(10px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            #timer-container {
+                margin: 10px auto;
+            }
+
+            #output {
+                font-size: 16px;
+                padding: 15px;
+                margin: 10px auto;
+            }
+
+            .word {
+                margin-right: 4px;
+            }
+
+            #slider {
+                height: 90vw;
+                margin: 10px auto;
+            }
         }
     </style>
 </head>
@@ -227,7 +282,7 @@
             const heart = document.createElement('div');
             heart.className = 'heart';
             heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.left = `${Math.random() * 100}%`;
             document.body.appendChild(heart);
             heart.addEventListener('animationend', () => heart.remove());
         }
@@ -242,7 +297,7 @@
                 clearInterval(countdown);
                 document.getElementById('timer-container').style.display = 'none';
                 runningElement.style.display = 'block';
-                setTimeout(displayText, 1000);
+                setTimeout(displayText, 3000);
             }
         }, 1000);
 
@@ -250,7 +305,7 @@
             const words = text.split(' ');
             let html = '';
             words.forEach((word, index) => {
-                html += `<span class="word" style="animation-delay: ${index * 0.05}s">${word}</span>`;
+                html += `<span class="word" style="animation-delay: ${index * 0.3}s">${word}</span>`;
             });
             return html;
         }
@@ -280,15 +335,12 @@
             outputElement.style.display = 'block';
             outputElement.innerHTML = animateText(paragraph);
 
-            // Start image slider after text is fully displayed
             setTimeout(() => {
                 outputElement.style.display = 'none';
                 startSlider();
-                // Stop heart animation when slider starts
                 clearInterval(heartInterval);
-                // Remove existing hearts
                 document.querySelectorAll('.heart').forEach(heart => heart.remove());
-            }, paragraph.split(' ').length * 50 + 5000);
+            }, paragraph.split(' ').length * 300 + 5000);
         }
 
         function startSlider() {
@@ -302,7 +354,6 @@
                 images[currentIndex].classList.add('active');
             }
 
-            // Preload images
             images.forEach(img => {
                 const preloadImg = new Image();
                 preloadImg.src = img.src;
