@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer with Animated Message</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            text-align: center;
+            margin: 0;
+            overflow-x: hidden;
+            perspective: 1000px;
+        }
+
+        #timer-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #timer {
+            font-size: 72px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: colorChange 2s infinite alternate;
+            z-index: 2;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .circle-1 {
+            width: 200px;
+            height: 200px;
+            border: 4px solid #ff6b6b;
+            animation-delay: 0s;
+        }
+
+        .circle-2 {
+            width: 180px;
+            height: 180px;
+            border: 4px solid #4ecdc4;
+            animation-delay: 0.5s;
+        }
+
+        #running {
+            font-size: 48px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #ff6b6b);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            display: none;
+            animation: shine 3s linear infinite, bounceIn 1s infinite;
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
+
+        #output {
+            font-size: 24px;
+            margin: 20px auto;
+            font-weight: 500;
+            color: #fff;
+            display: none;
+            max-width: 800px;
+            line-height: 1.8;
+            padding: 30px;
+            position: relative;
+            background: linear-gradient(45deg, rgba(255,107,107,0.1), rgba(78,205,196,0.1));
+            border-radius: 15px;
+            transform-style: preserve-3d;
+            animation: fadeInUp 1s ease-out;
+            white-space: pre-wrap; /* Changed from pre-line to pre-wrap */
+            text-align: left;
+        }
+
+        #message-container {
+            position: relative;
+            width: 50%;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: fixed;
+            font-size: 20px;
+            color: #ff6b6b;
+            z-index: 1;
+            pointer-events: none;
+            animation: floatHeart 4s linear infinite;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #ff6b6b 0%, #4ecdc4 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shine 2s linear infinite;
+            font-weight: bold;
+            display: inline-block;
+            padding: 0 5px;
+        }
+
+        #slider {
+            display: none;
+            position: relative;
+            width: 800px; /* Increased width */
+            height: 800px; /* Increased height */
+            overflow: hidden;
+            margin-top: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        #slider img {
+            width: 50%;
+            height: 100%;
+            position: absolute;
+            object-fit: contain; /* Changed from cover to contain */
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-color: #000; /* Added black background for letterboxing */
+        }
+
+        #slider img.active {
+            opacity: 1;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 0.4; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+
+        @keyframes colorChange {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        @keyframes bounceIn {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-30px); }
+            60% { transform: translateY(-15px); }
+        }
+
+        @keyframes floatHeart {
+            0% { transform: translateY(100vh) scale(0); opacity: 1; }
+            100% { transform: translateY(-100vh) scale(1); opacity: 0; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .word {
+            opacity: 0;
+            display: inline-block;
+            animation: fadeInWord 0.5s ease-out forwards;
+            margin-right: 8px; /* Added spacing between words */
+        }
+
+        @keyframes fadeInWord {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div id="timer-container">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div id="timer">60</div>
+    </div>
+    <div id="running"><b>HAPPY BIRTHDAY MY ETERNAL LOVE❤️💋</b></div>
+    <div id="message-container">
+        <div id="output"></div>
+    </div>
+    <div id="slider">
+        <img src="images/img8.jpeg" class="active">
+        <img src="images/img7.jpeg">
+        <img src="images/img4.jpeg">
+        <img src="images/img3.jpeg">
+        <img src="images/img2.jpeg">
+        <img src="images/img6.jpeg">
+        <img src="images/img10.jpeg">
+        <img src="images/img1.jpeg">
+        <img src="images/img9.jpeg">
+        <img src="images/img12.jpeg">
+        <img src="images/img11.jpeg">
+        <img src="images/img5.jpeg">
+    </div>
+
+    <script>
+        let timeLeft = 60;
+        const timerElement = document.getElementById('timer');
+        const runningElement = document.getElementById('running');
+        const outputElement = document.getElementById('output');
+        const sliderElement = document.getElementById('slider');
+        const images = Array.from(sliderElement.getElementsByTagName('img'));
+        let currentIndex = 0;
+        let isSliderRunning = false;
+        let heartInterval;
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            document.body.appendChild(heart);
+            heart.addEventListener('animationend', () => heart.remove());
+        }
+
+        heartInterval = setInterval(createHeart, 300);
+
+        const countdown = setInterval(() => {
+            timerElement.textContent = timeLeft;
+            timeLeft--;
+
+            if (timeLeft < 0) {
+                clearInterval(countdown);
+                document.getElementById('timer-container').style.display = 'none';
+                runningElement.style.display = 'block';
+                setTimeout(displayText, 1000);
+            }
+        }, 1000);
+
+        function animateText(text) {
+            const words = text.split(' ');
+            let html = '';
+            words.forEach((word, index) => {
+                html += `<span class="word" style="animation-delay: ${index * 0.05}s">${word}</span>`;
+            });
+            return html;
+        }
+
+        function displayText() {
+            const paragraph = `
+          Saraa❤️ As I write this birthday message my heart❤️ overflows with emotions that words can barely contain From those magical first days of friendship where we talked endlessly about our dreams and fears to this profound love we share today every moment with you feels like a blessing from the universe You've made my world so extraordinarily beautiful that sometimes I have to pinch myself to believe this isn't just a dream Remember how we started as best friends? Those precious late-night conversations (Asleelta talks N uuhhh only lsten not rplying bck💋🥵🥶) the way you could read my thoughts before I even spoke them and how perfectly our souls connected from the very beginning Looking back I realize we were writing our love story long before we even knew it Our hearts were whispering what our minds hadn't yet realized that we were destined to be so much more than just friends❤️🙌.
+        I promise you this my love just as our love blossomed from the purest friendship I will nurture it every single day with the same dedication and care I promise to be not just your lover but always your best friend first the one who shares every laugh wipes away every tear and holds every secret close to my heart You're still my favorite person to talk to my favorite shoulder to lean on and now you're also the one whose touch sets my soul on fire🔥(Spcl your 0 size figure👙💋🥶)
+        The comfort we share is something I'll always cherish how we can be completely ourselves vulnerable yet strong together From our deepest heart-to-heart talks to our most passionate moments everything with you feels divinely right I promise to always create a safe space where you can be unapologetically yourself where our love can grow wilder and deeper with each passing day🥰
+         On your special day I want to make these sacred promises to you:
+        I promise to love you more fiercely with each sunrise and sunset🌇🌃❤️
+        I promise to stand by you through every storm and celebration❤️
+        I promise to keep that spark alive in our late-night conversations and intimate moments💋
+         I promise to worship your body and soul with the same intensity as I do today💗
+         I promise to fight for our love, even when times get tough💗
+         I promise to be your strength when you feel weak, and your peace when the world gets too loud💗
+         I promise to make you feel as special as you are, not just on your birthday, but every single day💗
+        Your love is the most precious gift life has blessed me with. Every touch, every glance, every whispered word between us is pure magic The passion we share especially during our intimate moments (Room moment's🥶💋) is a testament to how deeply our souls are intertwined You're not just my girlfriend you're my soulmate my heartbeat my safe harbor in this vast ocean of life Meri jaaannnn Meri pyri Saraaaa❤️
+        I vow to protect our love story to keep adding beautiful chapters filled with passion, adventure, and endless love You deserve nothing less than the entire universe and I promise to spend my life trying to give it to you one star at a time
+        Happy Birthday, my eternal love! Thank you for making my life a fairytale I never want to wake up from Here's to celebrating the miracle that you are today and every day May our love continue to grow deeper, wilder, and more beautiful with each breath we take together
+        
+        Forever and Always Yours
+        With All My Heart and Soul
+        I promise to keep making you blush with our naughty late-night talks because that's just one of the countless ways I love to remind you how crazy I am about you body and soul
+        Once Again HAPPY BIRTHDAY MERI PYRI SARAAA❤️  `;
+
+            outputElement.style.display = 'block';
+            outputElement.innerHTML = animateText(paragraph);
+
+            // Start image slider after text is fully displayed
+            setTimeout(() => {
+                outputElement.style.display = 'none';
+                startSlider();
+                // Stop heart animation when slider starts
+                clearInterval(heartInterval);
+                // Remove existing hearts
+                document.querySelectorAll('.heart').forEach(heart => heart.remove());
+            }, paragraph.split(' ').length * 50 + 5000);
+        }
+
+        function startSlider() {
+            if (isSliderRunning) return;
+            isSliderRunning = true;
+            sliderElement.style.display = 'block';
+
+            function showNextImage() {
+                images[currentIndex].classList.remove('active');
+                currentIndex = (currentIndex + 1) % images.length;
+                images[currentIndex].classList.add('active');
+            }
+
+            // Preload images
+            images.forEach(img => {
+                const preloadImg = new Image();
+                preloadImg.src = img.src;
+            });
+
+            setInterval(showNextImage, 3000);
+        }
+    </script>
+</body>
+</html>
