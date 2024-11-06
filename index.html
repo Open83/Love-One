@@ -246,7 +246,7 @@
     <div id="timer-container">
         <div class="circle circle-1"></div>
         <div class="circle circle-2"></div>
-        <div id="timer">60</div>
+        <div id="timer">5</div>
     </div>
     <div id="running"><b>HAPPY BIRTHDAY MY ETERNAL LOVE❤️💋</b></div>
     <div id="message-container">
@@ -268,7 +268,7 @@
     </div>
 
     <script>
-        let timeLeft = 60;
+        let timeLeft = 5;
         const timerElement = document.getElementById('timer');
         const runningElement = document.getElementById('running');
         const outputElement = document.getElementById('output');
@@ -297,7 +297,7 @@
                 clearInterval(countdown);
                 document.getElementById('timer-container').style.display = 'none';
                 runningElement.style.display = 'block';
-                setTimeout(displayText, 3000);
+                setTimeout(displayText, 50000);
             }
         }, 1000);
 
