@@ -297,7 +297,7 @@
                 clearInterval(countdown);
                 document.getElementById('timer-container').style.display = 'none';
                 runningElement.style.display = 'block';
-                setTimeout(displayText, 50000);
+                setTimeout(displayText, 3000);
             }
         }, 1000);
 
@@ -340,7 +340,7 @@
                 startSlider();
                 clearInterval(heartInterval);
                 document.querySelectorAll('.heart').forEach(heart => heart.remove());
-            }, paragraph.split(' ').length * 300 + 5000);
+            }, paragraph.split(' ').length * 300 + 50000);
         }
 
         function startSlider() {
